@@ -1,8 +1,9 @@
 class ContainerProblem:
-    def __init__(self, maxWeight, elementsWeight, elementsProfit):
+    def __init__(self, maxWeight, elementsWeight, elementsProfit, loops):
         self.maxWeight = maxWeight
         self.weights = elementsWeight
         self.profits = elementsProfit
+        self.loop = loops
 
     def bruteForce(self):
         return
@@ -11,4 +12,13 @@ class ContainerProblem:
         return
 
     def topDown(self):
-        return 
+        maxValue = 0
+        maxList = []
+        actualList = []
+        return
+
+    def actualValue(self, actualList):
+        value = 0
+        for element in actualList:
+            value += self.profits[element]
+        return value
