@@ -9,12 +9,29 @@ class ContainerProblem:
         self.maxProfit = 0
         self.itemList = []
 
-    #return a list of the items which combination gets the max possible value of all
+    #make a list of the items which combination gets the max possible value of all
     def bruteForce(self):
         self.addNextItem(0, 0, 0, [], len(self.weights))
+        print(self.itemList)
+        print(self.maxProfit)
 
+    #get the max combination through iteration by "asking" if the current element fits in the "current" bag
     def bottomUp(self):
-        return
+        rows = len(self.weights) + 1
+        table = self.createTable(rows)
+        for row in range(1, rows):
+            item = row - 1      # -1 because it need to compensate the extra row
+            for column in range(1, self.maxWeight): #column is the "current" weight
+                if self.weights[item] > column:
+                    table[row][column] = table[row-1][column]
+                else:
+                    if self.profits[item] + table[row-1][self.maxWeight-self.weights[item]] > table[row-1][column]:
+                        table[row][column] = self.profits[item] + table[row-1][column-self.weights[item]]
+                    else:
+                        table[row][column] = table[row-1][column]
+        self.maxProfit = table[-1][-1]
+        print(table)
+        #return
 
     def topDown(self):
         return
@@ -30,3 +47,9 @@ class ContainerProblem:
                     self.itemList = actualList + [actualItem]
                 self.addNextItem(actualWeight + self.weights[actualItem], actualItem + 1, actualValue + self.profits[actualItem], actualList + [actualItem], maxLengtList)
             actualItem = actualItem + 1
+
+    def createTable(self, rows):
+        table = [0]*rows
+        for row in range(rows):
+            table[row] = [0]*self.maxWeight
+        return table
