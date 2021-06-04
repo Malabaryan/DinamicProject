@@ -31,6 +31,8 @@ class ContainerProblem:
                         table[row][column] = table[row-1][column]
         self.maxProfit = table[-1][-1]
         print(table)
+        self.itemList = self.getItems(table)
+        print(self.itemList)
         #return
 
     def topDown(self):
@@ -53,3 +55,14 @@ class ContainerProblem:
         for row in range(rows):
             table[row] = [0]*self.maxWeight
         return table
+
+    def getItems(self, table):
+        items = []
+        row = len(self.profits) - 1 #arrays start from 0
+        column = self.maxWeight - 1
+        while row > 0:
+            if table[row][column] != table[row-1][column]:
+                items.append(row)
+                column = column - self.weights[row]
+            row = row - 1
+        return items
