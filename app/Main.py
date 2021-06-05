@@ -1,11 +1,9 @@
-# myls.py
-# Import the argparse library
 import sys
+sys.path.append('../GoldProblem.py')
+from GoldProblem import GoldProblem
 import argparse
-import os
+import numpy as np
 
-sys.path.append('../app/GoldProblem.py')
-from app.GoldProblem import GoldProblem
 
 #<editor-fold desc="Functions">
 
@@ -16,15 +14,18 @@ def ReadFile(problem, algorithm, path, iterations):
         print("")
     return algorithm
 
+
 def RandomMatrix(problem, algorithm, rows, columns, minValue, maxValue, iterations):
-    print(algorithm + rows + + columns + minValue + maxValue +  iterations)
+    matrixR = np.random.randint(int(minValue),high = int(maxValue), size=(int(rows), int(columns))).tolist()
+    ExecuteProblem(problem, algorithm, matrixR, iterations)
     return algorithm
 
 def ExecuteProblem(problem, algorithm, matrix, iterations):
     if(problem == "container"):
         print("Aqui metemos el codigo de Isaac")
     elif(problem == "goldmine"):
-        goldMine = GoldProblem(algorithm, matrix, iterations)
+        goldMine = GoldProblem(int(algorithm), matrix, int(iterations))
+        goldMine.start()
 
 #</editor-fold>
 
@@ -47,14 +48,14 @@ my_parser.add_argument('-a',
                        action="store",
                        default = "",
                        nargs = 2,
-                       help='enable the long listing format')
+                       help='Read a file and load the matrix from there.')
 
 my_parser.add_argument('-p',
                        '--pro',
                        action="store",
                        default = "",
                        nargs = 5,
-                       help='enable the long listing format')
+                       help='Create a matrix with random values.')
 
 # Execute parse_args()
 args = my_parser.parse_args()
@@ -65,14 +66,7 @@ if(args.archive != ""):
     ReadFile(problem, algorithmReceived, args.archive[0], args.archive[1])
 
 elif (args.pro != ""):
-    RandomMatrix(problem, algorithmReceived. args.pro[0], args.pro[1], args.pro[2], args.pro[3], args.pro[4])
+    RandomMatrix(problem, algorithmReceived, (args.pro)[0], (args.pro)[1], (args.pro)[2], (args.pro)[3],(args.pro)[4])
 
 else:
     print("Use -h to get help.")
-
-    matrix = [[1,1,1,9,1,9,9],
-              [1,1,9,1,9,1,1],
-              [9,9,1,1,1,1,1],
-              [1,1,9,10,10,10,10]]
-
-    #print(checkLAbyrint(matrix))

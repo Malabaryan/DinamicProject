@@ -1,6 +1,5 @@
-import sys
-import numpy as np
-
+import timeit
+import random
 
 class GoldProblem():
     def __init__(self, pAlgorithm, pMatrix, pIterations):
@@ -180,40 +179,37 @@ class GoldProblem():
                     return finalList
 
     # Print the results from the program
-    def printResults(self):
+    def printResults(self, results, fulltime, averageTime):
+        print("The maximum value is: " + str(results[0]))
+        print("The paths founded are: ")
+        for path in results[1]:
+            print(path)
 
-        print("Resultados")
+        print("Time taken to execute all the iterations: " + str(fulltime))
+        print("Average time taken in each execution: " + str(averageTime))
+
 
     # Start the algorithm selected
     def start(self):
+        result = []
+        times = []
+        startFulltime = timeit.default_timer()
+
+        #Execute iterations
         for iteration in range(self.iterations):
+            starttime = timeit.default_timer()
             if(self.algorithm == 1):
-                return self.bruteForce(self.matrix)
+                result = self.bruteForce(self.matrix)
             if(self.algorithm == 2):
-                return self.dinamicSolve(self.matrix)
+                result = self.dinamicSolve(self.matrix)
+            exitTime = timeit.default_timer() - starttime
+
+            # Add the time measured
+            times.append(exitTime)
+
+        # Full time of executions
+        exitFullTime = timeit.default_timer() - startFulltime
+        self.printResults(result,exitFullTime ,sum(times) / len(times))
 
 
-pIterations = 1
-pMatrix = [[1 ,20,3 ,4 ,5,  6,70,8,9,10],
-           [10,9 ,8 ,70,68, 52,4,30,21,1],
-           [5 ,45,30,2 ,10, 6,70,86,9,92],
-           [5 ,4 ,30,21,10, 6,70,8,92,9],
-           [56,4 ,30,2 ,10, 60,70,8,90,9]]
 
-
-
-pMatrix2 = [[3,3,5],
-            [5,5,3],
-            [5,5,5]]
-
-
-pAlgorithm = 1
-gp = GoldProblem(pAlgorithm, pMatrix2, pIterations)
-result = gp.start()
-print(result)
-
-
-pAlgorithm = 2
-gp = GoldProblem(pAlgorithm, pMatrix2, pIterations)
-result = gp.start()
-print(result)
