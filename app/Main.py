@@ -1,4 +1,5 @@
 import sys
+import csv
 sys.path.append('../GoldProblem.py')
 from GoldProblem import GoldProblem
 import argparse
@@ -17,15 +18,14 @@ def ReadFile(problem, algorithm, path, iterations):
 
 def RandomMatrix(problem, algorithm, rows, columns, minValue, maxValue, iterations):
     matrixR = np.random.randint(int(minValue),high = int(maxValue), size=(int(rows), int(columns))).tolist()
-    ExecuteProblem(problem, algorithm, matrixR, iterations)
-    return algorithm
+    return ExecuteProblem(problem, algorithm, matrixR, iterations)
 
 def ExecuteProblem(problem, algorithm, matrix, iterations):
     if(problem == "container"):
         print("Aqui metemos el codigo de Isaac")
     elif(problem == "goldmine"):
         goldMine = GoldProblem(int(algorithm), matrix, int(iterations))
-        goldMine.start()
+        return goldMine.start()
 
 #</editor-fold>
 
@@ -69,4 +69,12 @@ elif (args.pro != ""):
     RandomMatrix(problem, algorithmReceived, (args.pro)[0], (args.pro)[1], (args.pro)[2], (args.pro)[3],(args.pro)[4])
 
 else:
-    print("Use -h to get help.")
+    with open('innovators.csv', 'w', newline='') as file:
+        writer = csv.writer(file)
+        for sizeMatrix in range (2, 50):
+            nSize = sizeMatrix
+            mSize = sizeMatrix
+            for iterations in range(1,6):
+                amountIterations = 10 ** iterations
+                writer.writerow(RandomMatrix(problem, 1, nSize, mSize, 0, 100, amountIterations))
+                writer.writerow(RandomMatrix(problem, 2, nSize, mSize, 0, 100, amountIterations))
