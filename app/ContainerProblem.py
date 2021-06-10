@@ -1,9 +1,13 @@
-class ContainerProblem:
-    def __init__(self, maxWeight, elementsWeight, elementsProfit, loops):
+import timeit
+import random
+
+class ContainerProblem():
+    def __init__(self, pAlgorithm, maxWeight, pMatrix, pIterations):
+        self.algorithm = pAlgorithm
         self.maxWeight = maxWeight
-        self.weights = elementsWeight
-        self.profits = elementsProfit
-        self.loop = loops
+        self.weights = pMatrix[0]
+        self.profits = pMatrix[1]
+        self.loop = pIterations
 
         #to track the combination that gave the maximum profit
         self.maxProfit = 0
@@ -30,13 +34,15 @@ class ContainerProblem:
                     else:
                         table[row][column] = table[row-1][column]
         self.maxProfit = table[-1][-1]
-        print(table)
+        #print(table)
+        for row in table:
+            print(row)
         self.itemList = self.getItems(table)
         print(self.itemList)
         #return
 
     def topDown(self):
-        return
+        return []
 
     #if it is possible add the next item position to the list
     def addNextItem(self, actualWeight, actualItem, actualValue, actualList, maxLengtList):
@@ -58,11 +64,41 @@ class ContainerProblem:
 
     def getItems(self, table):
         items = []
-        row = len(self.profits) - 1 #arrays start from 0
-        column = self.maxWeight - 1
+        row = len(self.profits)
+        column = self.maxWeight - 1 #avoid out of range
         while row > 0:
             if table[row][column] != table[row-1][column]:
-                items.append(row)
-                column = column - self.weights[row]
+                items.append(row-1) #avoid out of range
+                column = column - self.weights[row-1]
             row = row - 1
         return items
+
+    def printResults(self, results, fulltime, averageTime):
+        print("The maximum value is: " + str(self.maxProfit))
+        print("The combination founded is: " + str(self.itemList))
+
+        print("Time taken to execute all the iterations: " + str(fulltime))
+        print("Average time taken in each execution: " + str(averageTime))
+
+    def start(self):
+        result = []
+        times = []
+        startFulltime = timeit.default_timer()
+
+        #Execute iterations
+        for iteration in range(self.iterations):
+            starttime = timeit.default_timer()
+            if (self.algorithm == 1):
+                self.bruteForce()
+            if (self.algorithm == 2):
+                self.bottomUp()
+            else:
+                result = self.topDown()
+            exitTime = timeit.default_timer() - starttime
+
+            #Add the time measured
+            times.append(exitTime)
+
+        #Full time of execution
+        exitFullTime = timeit.default_timer() - startFulltime
+        self.printResults(result, exitFullTime, sum(times)/len(times))
