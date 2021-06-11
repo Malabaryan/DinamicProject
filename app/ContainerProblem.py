@@ -44,11 +44,8 @@ class ContainerProblem():
     def topDown(self):
         table = self.createTable(len(self.weights) + 1)
         self.maxProfit = self.topDownAux(table, len(self.weights), self.maxWeight-1) #columns goes from 0 to maxWeight-1
-        for row in table:
-            print(row)
-        print(self.maxProfit)
+        
         self.itemList = self.getItems(table)
-        print(self.itemList)
 
     def topDownAux(self, matrix, row, column): #row current item, column "current" weight
         # stop conditions
