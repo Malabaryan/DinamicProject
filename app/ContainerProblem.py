@@ -37,8 +37,8 @@ class ContainerProblem():
         #print(table)
         '''for row in table:
             print(row)
-        self.itemList = self.getItems(table)
         print(self.itemList)'''
+        self.itemList = self.getItems(table)
 
 
     def topDown(self):
