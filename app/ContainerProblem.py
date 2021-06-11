@@ -103,6 +103,8 @@ class ContainerProblem():
         print("Time taken to execute all the iterations: " + str(fulltime))
         print("Average time taken in each execution: " + str(averageTime))
 
+        return [str(self.maxProfit), str(self.itemList), str(fulltime), str(averageTime)]
+
     def start(self):
         result = []
         times = []
@@ -124,4 +126,4 @@ class ContainerProblem():
 
         #Full time of execution
         exitFullTime = timeit.default_timer() - startFulltime
-        self.printResults(result, exitFullTime, sum(times)/len(times))
+        return self.printResults(result, exitFullTime, sum(times)/len(times))
