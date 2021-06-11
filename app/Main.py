@@ -9,14 +9,18 @@ import numpy as np
 from numpy import random
 
 
+
 #<editor-fold desc="Functions">
 
 # Returns a matrix specified in the path
 def ReadFile(problem, algorithm, path, iterations):
-    print(algorithm + path + iterations)
-    if(problem == "1"):
-        print("")
-    return algorithm
+    if (problem == "container"):
+        matrixC = np.loadtxt(path).tolist()
+        return ExecuteProblem(problem, algorithm, matrixC, iterations, 70)
+    elif (problem == "goldmine"):
+        matrixR = np.loadtxt(path).tolist()
+        return ExecuteProblem(problem, algorithm, matrixR, iterations, 0)
+
 
 
 def RandomMatrix(problem, algorithm, rows, columns, minValue, maxValue, iterations):
@@ -55,12 +59,12 @@ my_parser = argparse.ArgumentParser(description='List the content of a folder')
 my_parser.add_argument('problem',
                        metavar='problem',
                        type=str,
-                       help='the problem to solve. Use 1 for Container and  2 for Goldmine.')
+                       help='The problem to solve. Use "container" for Container and "goldmine" for Goldmine.')
 
 my_parser.add_argument('algorithm',
                        metavar='algorithm',
                        type=str,
-                       help='the algorithm to use. Use 1 for Brute-Force and  2 for Dinamic.')
+                       help='The algorithm to use. Use 1 for Brute-Force and  2 for Dinamic.')
 
 my_parser.add_argument('-a',
                        '--archive',
@@ -74,7 +78,15 @@ my_parser.add_argument('-p',
                        action="store",
                        default = "",
                        nargs = 5,
-                       help='Create a matrix with random values.')
+                       help='Create a matrix with random values. If you are going to solve the container problem you can'
+                            'use the following example:\n'
+                            'Base: -p maxWeight NSize weightsRange benefitsRange iterations \n'
+                            'Example: -p 70 10 10-15 20-50 1000 \n'
+                            '\n'
+                            'If you are going to solve the gold problem:\n'
+                            'Base: -p N M Min Max iteraciones\n'
+                            'Example: -p 5 6 0 100 1000'
+                                )
 
 # Execute parse_args()
 args = my_parser.parse_args()
@@ -88,20 +100,4 @@ elif (args.pro != ""):
     print (RandomMatrix(problem, algorithmReceived, (args.pro)[0], (args.pro)[1], (args.pro)[2], (args.pro)[3],(args.pro)[4]))
 
 else:
-    with open('results.csv', 'w', newline='') as file:
-        writer = csv.writer(file)
-        for sizeMatrix in range (2, 30):
-            W = 5 # Generar random
-            mSize = sizeMatrix
-            random1 = 4  # generar random
-            random2 = 8  # generar random
-            random3 = 4  # generar random
-            random4 = 8  # generar random
-
-            rango1 = str(random1) + "-" + str(random2)
-            rango2 = str(random3) + "-" + str(random4)
-            for iterations in range(1,5):
-                amountIterations = 10 ** iterations
-                writer.writerow(RandomMatrix(problem, 1, W, mSize, rango1, rango2, amountIterations))
-                writer.writerow(RandomMatrix(problem, 2, W, mSize, rango1, rango2, amountIterations))
-                writer.writerow(RandomMatrix(problem, 3, W, mSize, rango1, rango2, amountIterations))
+    print("Use -h to get help.")
