@@ -53,6 +53,7 @@ class GoldProblem():
         valor2 = 0
         valor3 = 0
 
+        # If the value in the matrix is lower, replace with the current
         if (auxMatrix[fila][columna] < valor):
             auxMatrix[fila][columna] = valor
 
@@ -72,6 +73,7 @@ class GoldProblem():
             valor3 = valor + matrix[fila][columna+1]
             self.dinamicSolveAux(fila, columna + 1, matrix, valor3, auxMatrix)
 
+            # Final value
             if(fila == maxFila-1):
                 return auxMatrix
 

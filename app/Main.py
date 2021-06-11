@@ -66,7 +66,7 @@ if(args.archive != ""):
     ReadFile(problem, algorithmReceived, args.archive[0], args.archive[1])
 
 elif (args.pro != ""):
-    RandomMatrix(problem, algorithmReceived, (args.pro)[0], (args.pro)[1], (args.pro)[2], (args.pro)[3],(args.pro)[4])
+    print (RandomMatrix(problem, algorithmReceived, (args.pro)[0], (args.pro)[1], (args.pro)[2], (args.pro)[3],(args.pro)[4]))
 
 else:
     with open('innovators.csv', 'w', newline='') as file:
