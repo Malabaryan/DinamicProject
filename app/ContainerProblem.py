@@ -7,7 +7,7 @@ class ContainerProblem():
         self.maxWeight = maxWeight
         self.weights = pMatrix[0]
         self.profits = pMatrix[1]
-        self.loop = pIterations
+        self.iterations = pIterations
 
         #to track the combination that gave the maximum profit
         self.maxProfit = 0
@@ -16,8 +16,8 @@ class ContainerProblem():
     #make a list of the items which combination gets the max possible value of all
     def bruteForce(self):
         self.addNextItem(0, 0, 0, [], len(self.weights))
-        print(self.itemList)
-        print(self.maxProfit)
+        #print(self.itemList)
+        #print(self.maxProfit)
 
     #get the max combination through iteration by "asking" if the current element fits in the "current" bag
     def bottomUp(self):
@@ -35,14 +35,36 @@ class ContainerProblem():
                         table[row][column] = table[row-1][column]
         self.maxProfit = table[-1][-1]
         #print(table)
-        for row in table:
+        '''for row in table:
             print(row)
         self.itemList = self.getItems(table)
-        print(self.itemList)
-        #return
+        print(self.itemList)'''
+
 
     def topDown(self):
-        return []
+        table = self.createTable(len(self.weights) + 1)
+        self.maxProfit = self.topDownAux(table, len(self.weights), self.maxWeight-1) #columns goes from 0 to maxWeight-1
+        for row in table:
+            print(row)
+        print(self.maxProfit)
+        self.itemList = self.getItems(table)
+        print(self.itemList)
+
+    def topDownAux(self, matrix, row, column): #row current item, column "current" weight
+        # stop conditions
+        if row == 0 or column == 0:
+            return 0
+        #avoid out of index
+        if matrix[row][column] != 0:
+            return matrix[row][column]
+
+        # choice diagram code
+        if self.weights[row - 1] <= column+1: #compensate the -1
+            matrix[row][column] = max(self.profits[row - 1] + self.topDownAux(matrix, row-1, column-self.weights[row-1]), self.topDownAux(matrix, row-1, column))
+            return matrix[row][column]
+        elif self.weights[row - 1] > column:
+            matrix[row][column] = self.topDownAux(matrix, row - 1, column)
+            return matrix[row][column]
 
     #if it is possible add the next item position to the list
     def addNextItem(self, actualWeight, actualItem, actualValue, actualList, maxLengtList):
@@ -56,6 +78,7 @@ class ContainerProblem():
                 self.addNextItem(actualWeight + self.weights[actualItem], actualItem + 1, actualValue + self.profits[actualItem], actualList + [actualItem], maxLengtList)
             actualItem = actualItem + 1
 
+    #create a matrix of nxm row, n = number of items + 1, m = maximun soported weight
     def createTable(self, rows):
         table = [0]*rows
         for row in range(rows):
@@ -90,10 +113,10 @@ class ContainerProblem():
             starttime = timeit.default_timer()
             if (self.algorithm == 1):
                 self.bruteForce()
-            if (self.algorithm == 2):
+            elif (self.algorithm == 2):
                 self.bottomUp()
-            else:
-                result = self.topDown()
+            elif(self.algorithm == 3):
+                self.topDown()
             exitTime = timeit.default_timer() - starttime
 
             #Add the time measured
